@@ -1,0 +1,41 @@
+<ion-content color="light">
+    <ion-text color="primary" class="ion-text-center">
+        <h1 class="app-name" style="font-size: 40px; margin-top: 60px;">Welcome! User</h1>
+    </ion-text>
+
+    <ion-img color="primary" style="height: 100px; margin-top: 30px;" src="https://image.flaticon.com/icons/png/512/1077/1077114.png"></ion-img>
+    <ion-grid color="light" style="margin-top: 50%;">
+        <ion-row color="light" class="ion-align-items-center" class="ion-justify-content-center" style="height: 50%">
+            <form [formGroup]="form">
+
+
+
+                <ion-item color="light">
+                    <ion-label position="floating">E-mail</ion-label>
+                    <ion-input class="label" type="email" formControlName="email"></ion-input>
+
+                </ion-item>
+                <ion-item color="light">
+                    <ion-label position="floating">Password</ion-label>
+                    <ion-input class="label" type="password" formControlName="password"></ion-input>
+                </ion-item>
+
+                <ion-button expand="block" fill="outline" color="primary" type="submit" (click)="onRegisterUser()">
+                    Sign Up
+                </ion-button>
+
+
+            </form>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>
+
+<ion-footer>
+    <ion-progress-bar type="indeterminate" *ngIf="progress"></ion-progress-bar>
+    <ion-toolbar>
+        <ion-text color="primary" class="ion-text-center">
+            <p routerLink="/auth" class="label">Already have an account? <span style="color: cornflowerblue;">Log In</span></p>
+        </ion-text>
+    </ion-toolbar>
+</ion-footer>

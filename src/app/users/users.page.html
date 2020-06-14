@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Users</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-searchbar animated [(ngModel)]="query" (ngModelChange)="searchuser(query)" placeholder="Search by Firstname"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+
+
+    <ion-list *ngIf="profilelist?.length > 0" #other>
+        <ion-item *ngFor="let item of profilelist">
+            <ion-avatar slot="start">
+                <img [src]="item.imageUrl">
+            </ion-avatar>
+            <ion-label> {{item.firstname}} </ion-label>
+        </ion-item>
+
+    </ion-list>
+
+    <ion-list>
+        <ion-item *ngFor="let item of profile" (click)="goToUser(item)">
+
+            <ion-avatar slot="start">
+                <img [src]="item.imageUrl">
+            </ion-avatar>
+            <ion-label>{{item.firstname}} {{item.lastname}}</ion-label>
+
+
+
+        </ion-item>
+    </ion-list>
+
+
+
+</ion-content>

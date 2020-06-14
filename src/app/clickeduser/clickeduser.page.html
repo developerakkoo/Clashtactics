@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title color="light"> {{username}} </ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/tabs/tab3"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<!-- [ngClass]="{ 'from': userid === userid, 'to':   loggeduserkey === loggeduserkey }" -->
+<ion-content>
+    <div id="chatMessage">
+        <ion-list>
+            <ion-item lines="none" *ngFor="let item of msglist; let i=index">
+                <ion-label [ngClass]="userid === item.receiver ? 'to' :'from'"> {{ item.message|titlecase }} </ion-label>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <ion-toolbar>
+        <ion-input style="border: 2px solid #fa6262; border-radius: 40px;" placeholder="Type here..." type="text" [(ngModel)]="message"></ion-input>
+        <ion-button slot="end" fill="clear" (click)="sendMessage()">
+            <ion-icon style="color: #fa6262;" slot="icon-only" name="send"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,66 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title color="light">
+            My Chats
+        </ion-title>
+        <!-- <ion-searchbar animated [(ngModel)]="query" (ngModelChange)="searchuser(query)" placeholder="Search by Firstname"></ion-searchbar> -->
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <!--  <ion-list>
+        <ion-list-header>
+            <ion-label>Searched User</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let item of profilelist" (click)="gotouser(item.key, item.username)">
+            <ion-avatar slot="start">
+                <img [src]="item.imageUrl">
+            </ion-avatar>
+            <ion-label> {{item.username}} </ion-label>
+        </ion-item>
+
+    </ion-list> -->
+    <ion-list>
+        <ion-list-header>
+            <ion-label>All Users</ion-label>
+        </ion-list-header>
+        <ion-list>
+
+
+            <ion-list>
+                <ion-item-sliding *ngFor="let item of items |async" (dblclick)="gotouser(item.key, item.username)">
+                    <ion-item >
+                        <ion-avatar>
+                            <img [src]="item.userimage" />
+                        </ion-avatar>
+                        <ion-label>{{item.username}}</ion-label>
+                        <ion-icon color="danger" slot="end" name="cancel"></ion-icon>
+                    </ion-item>
+                   
+            
+                    <ion-item-options side="end">
+                        <ion-item-option (click)="deleteUser(item.key)">Delete</ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ion-list>
+
+
+        </ion-list>
+        <!--   <ion-item *ngFor="let item of items |async" (click)="gotouser(item.key, item.username)">
+            <ion-avatar>
+                <img [src]="item.userimage" />
+            </ion-avatar>
+            <ion-label> {{item.username}} </ion-label>
+
+        </ion-item> -->
+    </ion-list>
+
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="openUserListPage()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

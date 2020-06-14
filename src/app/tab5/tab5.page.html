@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title color="light">Base Layout</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-list-header>
+            <ion-label>TownHall</ion-label>
+        </ion-list-header>
+
+        <ion-item *ngFor="let item of townhall" (click)="onOpenTownHallPage(item.id)">
+            <ion-icon color="primary" slot="end" name="add-circle"></ion-icon>
+            <ion-text class="ion-align-items-center"> {{item.name}} </ion-text>
+        </ion-item>
+    </ion-list>
+</ion-content>

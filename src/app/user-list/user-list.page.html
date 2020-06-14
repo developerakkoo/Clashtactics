@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title> All User </ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-item *ngFor="let item of profiles |async">
+            <ion-item (click)="onUserAddToChat(item)">
+                <ion-avatar slot="start">
+                    <img [src]="item.imageUrl" />
+                </ion-avatar>
+                <ion-label> {{item.username}} </ion-label>
+            </ion-item>
+
+        </ion-item>
+    </ion-list>
+</ion-content>

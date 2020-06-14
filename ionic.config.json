@@ -1,0 +1,8 @@
+{
+  "name": "Clashtastic",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

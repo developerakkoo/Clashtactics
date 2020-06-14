@@ -1,0 +1,51 @@
+<ion-content color="light" class="ion-justify-content-center">
+    <ion-text color="primary" class="ion-text-center">
+        <h1 class="app-name" style="font-size: 40px; margin-top: 60px;">Clashtactics</h1>
+    </ion-text>
+
+    <ion-grid color="light" style="margin-top: 50%;">
+        <ion-text style="margin-bottom: 40px; text-align: center;" color="primary">
+            <h3 class="app-name">Welcome back!</h3>
+        </ion-text>
+        <ion-row color="light" class="ion-align-items-center" class="ion-justify-content-center" style="height: 50%">
+            <div color="light">
+
+
+                <form [formGroup]="form">
+                    <hr>
+                    <ion-item color="light">
+                        <ion-label class="label" position="floating">Email</ion-label>
+                        <ion-input type="email" formControlName="email"></ion-input>
+                    </ion-item>
+
+                    <ion-item color="light">
+                        <ion-label class="label" position="floating">Password</ion-label>
+                        <ion-input type="password" formControlName="password"></ion-input>
+                    </ion-item>
+
+                    <ion-item color="light">
+                        <ion-label class="label">Accept our Policy!</ion-label>
+                        <ion-checkbox formControlName="policy"></ion-checkbox>
+                    </ion-item>
+
+
+                    <ion-button expand="block" fill="outline" [disabled]="!form.valid" type="submit" (click)="onLoginUser()">
+                        Login
+                    </ion-button>
+                    <ion-text class="ion-text-center" color="dark">
+                        <p routerLink="/register" style="margin-top: 20px;" class="label">Not a User? Sign Up</p>
+                    </ion-text>
+
+                </form>
+            </div>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-text (click)="openPolicy()" class="ion-text-center">
+            <p>Our Policy</p>
+        </ion-text>
+    </ion-toolbar>
+</ion-footer>

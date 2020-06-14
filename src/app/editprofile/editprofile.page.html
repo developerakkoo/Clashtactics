@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Profile
+        </ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-no-padding bodymain">
+    <ion-progress-bar type="indeterminate" *ngIf="!isUserProfileLoaded"></ion-progress-bar>
+
+    <ion-text *ngIf="isUserProfileLoaded" color="primary" class="ion-text-center">
+        <h1 style="font-size: 30px;" class="app-name"> Hey! {{ user?.username }}</h1>
+    </ion-text>
+    <div id="bg"></div>
+    <div *ngIf="isUserProfileLoaded">
+        <div class="profile">
+            <img [src]="user?.imageUrl">
+            <div class="border"></div>
+        </div>
+        <div class="name">
+            <h3> {{ user?.firstname }} {{ user?.lastname }}</h3>
+        </div>
+
+
+    </div>
+    <ion-button style="margin-top: 50px;" lines="none" (click)="onEditProfile()" expand="block" fill="clear" shape="round">
+        Edit Profile
+    </ion-button>
+
+
+
+</ion-content>

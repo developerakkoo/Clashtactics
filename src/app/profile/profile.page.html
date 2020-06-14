@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title color="light" >Edit Profile</ion-title>
+
+        <ion-buttons slot="start">
+            <ion-back-button color="light" defaultHref="/editprofile"></ion-back-button>
+
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+            <ion-button color="dark" [disabled]="!imageUrl" slot="end" (click)="saveProfile()">
+                <ion-icon color="light" slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div style="width: auto; height: 200px; background-color: #fa6262;">
+        <ion-img style="width: auto; height: 200px;" [src]="imageUrl"></ion-img>
+    </div>
+    <ion-progress-bar style="z-index: 1;" color="primary" [value]="uploadPercent |async"></ion-progress-bar>
+    
+    <div style="z-index: 10; float: right;" id="hide" class="col-lg-8 col-xs-8">
+        <label class="hand-cursor">
+         <input type="file" nv-file-select (change)="uploadFile($event)" uploader="$ctrl.uploader"/>
+         
+         <span  style=" box-shadow: 2px 2px 3px #999; padding: 20px; border-radius: 50%; z-index: 10; background-color: white; color: #fa6262;" class="photo_text hidden-xs">
+            <ion-icon  name="person-outline"></ion-icon>
+        </span>
+          </label>
+     </div>
+     <br>
+
+     <br>
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label style="font-family: Arial, Helvetica, sans-serif;" position="floating">Username</ion-label>
+                <ion-input [(ngModel)]="username" required> {{ profile |json }} </ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label style="font-family: Arial, Helvetica, sans-serif;" position="floating">Firstname</ion-label>
+                <ion-input [(ngModel)]="firstname" required></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label style="font-family: Arial, Helvetica, sans-serif;" position="floating">Lastname</ion-label>
+                <ion-input [(ngModel)]="lastname" required></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+    <!--  <ion-button (click)="AddProfile()">
+        <ion-icon slot="start" name="image-outline"></ion-icon>
+        Add Profile
+    </ion-button> -->
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+       <ion-button (click)="onUserDeleteAccount()" expand="block" fill="clear" shape="round">
+           Delete Account
+       </ion-button>
+    </ion-toolbar>
+</ion-footer>

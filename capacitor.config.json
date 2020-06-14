@@ -1,0 +1,8 @@
+{
+    "appId": "com.ScribbleStudio.clashtactics",
+    "appName": "Clashtastic",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "www",
+    "cordova": {}
+}

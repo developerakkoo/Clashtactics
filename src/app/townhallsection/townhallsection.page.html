@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Town Hall - {{townHallId}}</ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/tabs/tab5"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+    <!--  <ion-list>
+        <ion-item *ngFor="let item of items |async">
+            <ion-label> {{item.title}} </ion-label>
+        </ion-item>
+    </ion-list> -->
+
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12">
+                <ion-card class="ion-no-padding" *ngFor="let item of (items |async)?.slice().reverse()">
+                    <ion-card-header color="tertiary">
+
+                        <ion-label>{{item.title}}</ion-label>
+                        <p>Posted By: {{item?.username}}</p>
+
+
+                    </ion-card-header>
+                    <ion-card-content class="ion-no-padding">
+
+                        <ion-img style="width: auto; height: 250px;" [src]="item.imageUrl"></ion-img>
+
+                        <ion-button fill="clear" size="large" *ngIf="visible" (click)="addLike(item.key, item.likes)">
+                            <ion-icon slot="start" name="heart-outline"></ion-icon>
+                        </ion-button>
+                        <ion-button fill="clear" size="large" *ngIf="!visible" (click)="addDisLike(item.key, item.likes)">
+                            <ion-icon slot="start" name="heart"></ion-icon>
+                        </ion-button>
+                        <ion-button fill="clear" size="large" (click)="addcomment(item.id)">
+                            <ion-icon slot="start" name="chatbox-outline"></ion-icon>
+                        </ion-button>
+                        <ion-label style="padding: 10px; margin-left: 20px;">
+                            <h3> {{ item.likes }} Likes </h3>
+
+
+                        </ion-label>
+                        <ion-text class="ion-align-items-end">
+                            {{item.published_at | date}}
+                        </ion-text>
+                    </ion-card-content>
+
+
+                </ion-card>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="warning" (click)="onOpenAddLayoutPage()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

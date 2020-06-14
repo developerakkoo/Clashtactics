@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title color="light">
+            Global Chat
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content #scrollElement [scrollEvents]="true">
+    <ion-list>
+        
+
+            <div class="container" *ngFor="let item of (allMessage | async)">
+                <ion-avatar style="float: left;">
+                    <ion-img [src]="item.imageurl"></ion-img>
+                </ion-avatar>
+                <p style="padding: 10px;"> {{item.message}} </p>
+               
+              </div>
+    
+    </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <ion-toolbar>
+        <ion-input style="border: 2px solid #fa6262; border-radius: 40px;" placeholder="Type here..." type="text" [(ngModel)]="message"></ion-input>
+        <ion-button slot="end" fill="clear" (click)="onsend()">
+            <ion-icon color="primary" slot="icon-only" name="send"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>
