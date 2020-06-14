@@ -70,7 +70,7 @@
 <ion-card class="card" *ngFor="let item of (loadedposts |async)?.slice().reverse()" class="ion-no-margin" class="ion-no-padding">
     <ion-row>
         <ion-col size="10">
-            <ion-item>
+            <ion-item (click)="visitUserProfile(item)">
                 <ion-avatar>
                     <ion-img [src]="item.userimage"></ion-img>
                 </ion-avatar>
