@@ -5,7 +5,10 @@ import { Storage } from '@ionic/storage';
 import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Plugins } from "@capacitor/core";
+// import { initialize } from 'capacitor-admob'; No longar required
 
+const { AdMob } = Plugins;
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -32,6 +35,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      AdMob.initialize("ca-app-pub-1157490109832389~9683717748");
       this.storage.get('userid').then(val => {
         console.log('Got into log while starting the app', val);
         
