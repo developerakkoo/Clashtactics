@@ -27,11 +27,11 @@
             <ion-row>
                 <ion-col size="10">
 
-                    <ion-input [(ngModel)]="comment" type="text" value="add"></ion-input>
+                    <ion-input [(ngModel)]="comment" type="text" value="add" placeholder="Comment here..."></ion-input>
                 </ion-col>
                 <ion-col size="2">
-                    <ion-button (click)="onAddComment()">
-                        <ion-icon slot="icon-only" name="add"></ion-icon>
+                    <ion-button fill="clear" (click)="onAddComment()">
+                        <ion-icon slot="icon-only" name="send-outline"></ion-icon>
                     </ion-button>
                 </ion-col>
             </ion-row>

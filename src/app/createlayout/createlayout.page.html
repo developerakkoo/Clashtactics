@@ -1,27 +1,40 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-title>Create layout</ion-title>
+    <ion-toolbar color="primary">
+        <ion-title color="light">Create layout</ion-title>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/tabs/tab5"></ion-back-button>
+            <ion-back-button color="light" defaultHref="/tabs/tab5"></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <div style="width: auto; height: 200px; background-color: aquamarine;">
+    <div style="width: auto; height: 200px; background-color: #fa6262;">
         <ion-img style="width: auto; height: 200px;" [src]="imageUrl"></ion-img>
     </div>
-    <div>
-        <input style="background: none;" type="file" (change)="uploadFile($event)" />
+    <ion-progress-bar style="z-index: 1;" color="primary" [value]="uploadPercent |async"></ion-progress-bar>
+    
+    <div style="z-index: 10; float: right;" id="hide" class="col-lg-8 col-xs-8">
+        <label class="hand-cursor">
+         <input type="file" nv-file-select (change)="uploadFile($event)" uploader="$ctrl.uploader"/>
+         
+         <span  style=" box-shadow: 2px 2px 3px #999; padding: 20px; border-radius: 50%; z-index: 10; background-color: white; color: #fa6262;" class="photo_text hidden-xs">
+            <ion-icon  name="arrow-up-outline"></ion-icon>
+        </span>
+          </label>
+     </div>
 
-    </div>
-
-    <ion-item>
-        <ion-label position="floating">Description</ion-label>
-        <ion-textarea type="text" [(ngModel)]="title" required></ion-textarea>
-        <ion-icon slot="end" name="create-outline"></ion-icon>
-
-    </ion-item>
-
-    <ion-button shape="round" fill="outline" (click)="post()">Post</ion-button>
+    
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-item>
+            <ion-label style="font-family: monospace;" position="floating">Description</ion-label>
+            <ion-textarea type="url" [(ngModel)]="title" required></ion-textarea>
+            <ion-icon slot="end" name="create-outline"></ion-icon>
+    
+        </ion-item>
+    
+        <ion-button expand="block" shape="round" fill="outline" (click)="post()">Post</ion-button>
+    </ion-toolbar>
+</ion-footer>
