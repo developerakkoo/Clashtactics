@@ -6,9 +6,12 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PostService } from './post.service';
 import {Post} from './post.model';
-import { Observable } from 'rxjs';
+import 'rxjs/Rx';
 import { ActivatedRoute, Router } from '@angular/router';
 import { count, tap } from 'rxjs/operators';
+import { Observable, of } from "rxjs";
+import { map, catchError } from "rxjs/operators";
+
 
 @Component({
   selector: 'app-tab1',
@@ -28,12 +31,12 @@ postId;
 post;
 
 likedList =[];
-
-
-
+profileRef;
+itemsRef;
+items;
 backButtonSubscribtion;
 
-
+block;
   constructor(private postS: PostService,
               private storage: Storage,
               private database: AngularFireDatabase,
@@ -49,6 +52,8 @@ backButtonSubscribtion;
       this.storage.get('userid').then(key => {
         console.log('Userkey in TAb1 ', key);
         this.checkForCurrentUserProfile(key);
+        this.checkForBlockedUserProfile(key);
+
         this.userkey = key;
 
       });
@@ -72,16 +77,34 @@ backButtonSubscribtion;
 
   }
 
-   checkForCurrentUserProfile(userkey) {
-    this.database.list(`blockeduser/${userkey}`).valueChanges().subscribe(res => {
-      console.log('check urent user profile', res);
-      if (res.includes(userkey)) {
-        this.presentAlertConfirm('You are BLOCKED by the ADMIN you cannot move further!');
-      } else {
-        this.presentWelcomeConfirm('Welcome User! Please Hit OK to continue...');
+   checkForBlockedUserProfile(userkey) {
+    this.itemsRef = this.database.object(`/Profiles/${userkey}`);
+    // Use snapshotChanges().map() to store the key
+    this.items = this.itemsRef.valueChanges();
+    this.items.subscribe(data =>{
+      console.log("Blocked data ", data.isBlocked);
+      
+      if(data.isBlocked === true){
+       this.router.navigate(['/blocked-user']);
       }
+      
+    }) 
+   
 
-    });
+
+  }
+
+  checkForCurrentUserProfile(key){
+    this.profileRef = this.database.list(`/Profiles/${key}`).valueChanges().subscribe(profile =>{
+      if(profile.length > 0){
+        console.log("Checking profile...",profile);
+      }else{
+        this.router.navigate(['/profile',key]);
+        
+      }
+      
+    })
+    
   }
 
   reportPost(postid, post) {

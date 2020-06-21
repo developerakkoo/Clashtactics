@@ -14,6 +14,7 @@ export class VisitUserProfilePage implements OnInit {
 
   userkey;
   firstname;
+  lastname;
   username;
   isVerified;
   imageurl;
@@ -41,6 +42,7 @@ export class VisitUserProfilePage implements OnInit {
       console.log(userdata);
       
       this.firstname = userdata[0];
+      this.lastname =  userdata[5];
       this.imageurl = userdata[1];
       this.username = userdata[7];
       this.isVerified = userdata[4];

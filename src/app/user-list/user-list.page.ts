@@ -51,10 +51,10 @@ export class UserListPage implements OnInit {
       return;
       
     }
-    this.database.list(`privateUserChatList/${this.loggedUserKey}/`).push({
+    this.database.object(`privateUserChatList/${this.loggedUserKey}/`).set({
       username: user.username,
       userimage: user.imageUrl,
-      key: user.key
+      key: user.key,
     });
     this.router.navigate(['/tabs/tab3',  this.loggedUserKey]);
     

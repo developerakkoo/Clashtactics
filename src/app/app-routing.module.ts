@@ -89,6 +89,10 @@ const routes: Routes = [
     path: 'visit-user-profile/:userkey',
     loadChildren: () => import('./visit-user-profile/visit-user-profile.module').then( m => m.VisitUserProfilePageModule)
   },
+  {
+    path: 'blocked-user',
+    loadChildren: () => import('./blocked-user/blocked-user.module').then( m => m.BlockedUserPageModule)
+  },
   
 ];
 @NgModule({

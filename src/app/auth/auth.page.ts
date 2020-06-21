@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -21,12 +22,15 @@ export class AuthPage implements OnInit {
 
   userKeyFound: Boolean = false;
 
+  profileRef;
+  profile;
 
   constructor(private auth: AuthserviceService,
               private route: Router,
               private toastController: ToastController,
               private ActiveRoute: ActivatedRoute,
-              private storageLocal: Storage) {
+              private storageLocal: Storage,
+              private database: AngularFireDatabase) {
 
                 this.userkey = this.ActiveRoute.snapshot.paramMap.get('userkey');
                 console.log(this.userkey);
@@ -36,6 +40,7 @@ export class AuthPage implements OnInit {
                   if(val !== ""){
                     this.userKeyFound = true;
                   }
+                  
 
                   });
                }

@@ -10,9 +10,9 @@
 <ion-content>
 
     <ion-img [src]="imageurl"></ion-img>
-    <h1> {{ firstname }} </h1>
+    <h1 style="font-family: monospace; text-align: center;"> {{ firstname }} {{lastname}} </h1>
     <h3 *ngIf="isVerified == 'true'"> The User is verified</h3>
-    <ion-button (click)="onSendMessage()">
+    <ion-button expand="block" (click)="onSendMessage()">
         <ion-icon slot="start" name="add"></ion-icon>
         Message Me!
     </ion-button>

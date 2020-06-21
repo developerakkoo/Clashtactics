@@ -74,9 +74,9 @@
                 <ion-avatar>
                     <ion-img [src]="item.userimage"></ion-img>
                 </ion-avatar>
-            <p style="font-weight: bold;" color="dark">{{item?.username}}</p>
+            <p (click)="visitUserProfile(item.userkey)"  style="margin-left: 10px; font-weight: bold;" color="dark">{{item?.username}}</p>
             <p> <ion-avatar *ngIf="item.userVerified ==='true'" >
-                <img style="height: 20px; width:20px; margin-top: 10px; float:right;" src="https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_213062%2Fproject_335137%2Fimages%2FFigs%2FFaceVer.png" />
+                <img style="height: 20px; width:20px; margin-top: 23px; margin-left: 6px;" src="https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_213062%2Fproject_335137%2Fimages%2FFigs%2FFaceVer.png" />
             </ion-avatar></p>
             </ion-item>
         </ion-col>
