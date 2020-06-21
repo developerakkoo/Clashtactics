@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title style="title" color="light">
+        <ion-title  color="light">
             Feed
         </ion-title>
         <ion-buttons slot="start">
@@ -101,7 +101,7 @@
         <ion-col size="12">
             <p>Likes {{item?.likes}} </p>        
             
-                <ion-button   fill="clear" size="large" *ngIf="likeBTN(item.postID)" (click)="addDisLike(item)">
+                <ion-button   fill="clear" size="large" *ngIf="visible" (click)="addDisLike(item)">
                     <ion-icon slot="start" name="heart"></ion-icon>
                 </ion-button>
 

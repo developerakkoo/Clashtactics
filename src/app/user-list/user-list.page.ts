@@ -51,7 +51,7 @@ export class UserListPage implements OnInit {
       return;
       
     }
-    this.database.object(`privateUserChatList/${this.loggedUserKey}/`).set({
+    this.database.list(`privateUserChatList/${this.loggedUserKey}/`).push({
       username: user.username,
       userimage: user.imageUrl,
       key: user.key,
