@@ -80,6 +80,7 @@ export class AuthserviceService {
 
   logout() {
     this.authF.signOut();
+    this.route.navigate(['/auth']);
     this.isUserAuthenticated = false;
   }
 

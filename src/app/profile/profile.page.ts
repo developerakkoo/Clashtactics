@@ -3,11 +3,12 @@ import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ActionSheetController } from '@ionic/angular';
+import { LoadingController, ActionSheetController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { AuthserviceService } from '../auth/authservice.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,7 +42,9 @@ export class ProfilePage implements OnInit {
     private storage: AngularFireStorage,
     private router: Router,
     private route: ActivatedRoute,
-    private actionSheet: ActionSheetController) { 
+    private actionSheet: ActionSheetController,
+    private toastCtrl: ToastController,
+    private authService: AuthserviceService) { 
 
   }
 
@@ -64,7 +67,16 @@ export class ProfilePage implements OnInit {
     })
     
   }
+  async presentLoading(msg) {
+    const loading = await this.loadingCtrl.create({
+      message: msg,
+      duration: 2000
+    });
+    await loading.present();
 
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheet.create({
@@ -76,6 +88,31 @@ export class ProfilePage implements OnInit {
         icon: 'trash',
         handler: () => {
           console.log('Delete clicked');
+          this.auth.authState.subscribe(a =>{
+            this.database.list(`/Profiles`).remove(a.uid);
+            a.delete().then(success =>{
+              this.presentLoading("Deleting Account....Please wait!");
+              this.toastCtrl.create({
+                message: "Succesfully Deleted Account!",
+                duration: 3000
+              }).then(s =>{
+                s.present();
+              })
+              this.authService.logout();
+            }).catch(error =>{
+              this.presentLoading("You need to Login again To Perform this operation...");
+              this.toastCtrl.create({
+                message: "Login Again To Deleted Account!",
+                duration: 3000
+              }).then(s =>{
+                s.present();
+              })
+              this.authService.logout();
+              console.log("errror ",error);
+              
+            })
+          })
+
         }
       },  {
         text: 'Cancel',

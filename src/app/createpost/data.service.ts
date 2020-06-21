@@ -15,6 +15,7 @@ export class DataService {
 
   itemsRef: AngularFireList<any>;
   items: Observable<any[]>;
+  likedPosts: Observable<any[]>
 
 
   
@@ -28,10 +29,21 @@ constructor(private database: AngularFireDatabase,
       changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
     )
   );
-    }
+}
+
+    makeid(length) {
+      var result           = '';
+      var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for ( var i = 0; i < length; i++ ) {
+         result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+   }
 
     addpost(title: string, imageurl:string, username: string, userimage: string, userkey: string, userVerified: boolean) {
       this.itemsRef.push({
+        postID: this.makeid(10),
         title: title,
         imageUrl: imageurl,
         username: username,
@@ -61,6 +73,8 @@ constructor(private database: AngularFireDatabase,
         likes: like
       });
     }
+
+
 
     addComment(key: string, comment: string, username: string){
 

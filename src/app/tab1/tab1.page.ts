@@ -9,6 +9,7 @@ import {Post} from './post.model';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { count, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab1',
@@ -21,9 +22,14 @@ export class Tab1Page implements OnInit, OnDestroy {
   visible: boolean;
 
 loadedposts: Observable<any[]>;
+likedPosts: any;
+likeData: any[];
+PostLikes: [];
 userkey;
 
 databaseRef: AngularFireList<any[]>;
+dbRef: any;
+
 postId;
 post;
 
@@ -43,14 +49,14 @@ backButtonSubscribtion;
               private alertController: AlertController,
               private auth: AuthserviceService,
               private platform: Platform,
-              private actionSheetCtrl: ActionSheetController) {
+              private actionSheetCtrl: ActionSheetController,
+              private fireDB: AngularFireDatabase) {
 
       this.likeValue = 0;
       this.storage.get('userid').then(key => {
         console.log('Userkey in TAb1 ', key);
         this.checkForCurrentUserProfile(key);
         this.userkey = key;
-
       });
 
 
@@ -58,8 +64,64 @@ backButtonSubscribtion;
  ngOnInit() {
   this.loadedposts = this.dataS.getPosts();
   
+ 
+
+  // this.dataS.getPosts().subscribe((PostData:any[])=>{
+    // console.log("likeuserid ", PostData);
+    // PostData.forEach(element =>{
+      
+      // this.likedPosts = this.getlikedPosts(element.postID);
+
+    //  this.likedPosts = this.getlikedPosts(element.postID).subscribe((likeData:any[])=>{
+        
+    //     console.log("like data after ", likeData);
+    //     likeData.forEach(ele=>{
+    //         console.log("naving test",ele.key);
+    //         this.likeData = ele.key;
+    //         if(ele.key === this.userkey){
+    //           this.visible = true;
+    //         }else{
+    //           this.visible = false;
+    //         }
+    //     });
+        
+    //   });
+      
+    // });
+  // });
+  
+  
+  console.log("New like Data",)
 
   }
+
+  likeBTN(postdID: string){
+    this.getlikedPosts(postdID).subscribe((likeData:any[])=>{
+        
+      console.log("like data after ", likeData);
+      likeData.forEach(ele=>{
+          console.log("naving test",ele.key);
+          this.likeData = ele.key;
+          if(ele.key === this.userkey){
+            return true;
+          }else{
+            return false;
+          }
+      });
+      
+    });
+  }
+
+  getlikedPosts(postID){
+    this.databaseRef = this.database.list(`/likedBy/${postID}`);
+      this.likedPosts = this.databaseRef.snapshotChanges().pipe(
+        map(changes =>
+          changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+        ) 
+      );
+      return this.likedPosts;
+  }
+
 
   ionViewDidEnter() {
     this.backButtonSubscribtion = this.platform.backButton.subscribe(() => {
@@ -101,50 +163,26 @@ addLike(post) {
   console.log('key', post.key);
   console.log('like-->', this.userkey);
 
-  
-  this.database.list(`likedBy/`).push({
-    likedUserId: this.userkey,
-    likedPostId: post.key
-  });
+  this.dataS.addLike(post.key, post.likes);
 
-  
-
-
-  this.database.list(`likedBy/`).valueChanges().subscribe((data: any[]) => {
-
-
-    this.likedList = [];
-    console.log("Liked by obhject", data);
-    console.log("likeuserid ", data);
-    data.forEach(element =>{
-      if(element.likedUserId === this.userkey && post.key === element.likedPostId){
-        this.visible = true;
-        this.dataS.disLike(post.key,post.likes);
-      }else{
-        this.visible = false;
-        this.dataS.addLike(post.key, post.likes);
-
-      }
-    })
-    
-    
-  });
-/* 
- if(data.length >0){
-      console.log(data.length);
-      
-      this.visible = true;
-      this.dataS.disLike(post.key, post.likes); 
-    }else {
-     this.visible = false;
-      this.dataS.addLike(post.key, post.likes); 
-    } 
-
-  }); */
-
+  this.dbRef = this.fireDB.database.ref(`Posts/${post.key}/likedBy`);
+  this.dbRef.child(this.userkey).set(true);
 
 }
 
+addDisLike(post) {
+  console.log('key', post.key);
+  console.log('Post Id', post.postID);
+  console.log('value', post.likes);
+  console.log('Dislike-->', this.userkey);
+
+  this.dataS.disLike(post.key, post.likes);
+
+  this.dbRef = this.fireDB.database.ref(`likedBy/${post.postID}`);
+  this.dbRef.child(this.userkey).remove();
+
+
+}
 
 
 onPostActionOpen(){
@@ -155,30 +193,6 @@ visitUserProfile(userkey){
   this.router.navigate(['/visit-user-profile/',userkey]);
 }
 
-
-
-addDisLike(post) {
-  console.log('key', post.key);
-  console.log('value', post.likes);
-  console.log('Dislike-->', this.userkey);
-  this.visible = true;
-
-  this.dataS.disLike(post.key, post.likes);
-
-}
-
-likedPost(post) {
-
-  // Init my own id
-  const myId = this.userkey;
-  console.log('Userkey in LikedPost');
-
-
-  // Fetch the likes for this post in the firebase db
-  const postLikersList = this.database.list(`likedBy/${myId}/${post.key}`);
-  postLikersList.valueChanges().subscribe();
-
-}
 
 addcomment(key: string) {
   console.log('User Commented');
