@@ -23,10 +23,7 @@
                         <ion-input type="password" formControlName="password"></ion-input>
                     </ion-item>
 
-                    <ion-item color="light">
-                        <ion-label class="label">Accept our Policy!</ion-label>
-                        <ion-checkbox formControlName="policy"></ion-checkbox>
-                    </ion-item>
+                   
 
 
                     <ion-button expand="block" fill="outline" [disabled]="!form.valid" type="submit" (click)="onLoginUser()">
@@ -45,7 +42,7 @@
 <ion-footer>
     <ion-toolbar>
         <ion-text (click)="openPolicy()" class="ion-text-center">
-            <p>Our Policy</p>
+            <p>By Signup you accept Our Policy</p>
         </ion-text>
     </ion-toolbar>
 </ion-footer>

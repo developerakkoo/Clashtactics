@@ -10,10 +10,26 @@
 <ion-content>
 
     <ion-img [src]="imageurl"></ion-img>
-    <h1 style="font-family: monospace; text-align: center;"> {{ firstname }} {{lastname}} </h1>
-    <h3 *ngIf="isVerified == 'true'"> The User is verified</h3>
+    <h1 style="font-family: monospace; text-align: center;"></h1>
+       <ion-text color="primary" class="ion-text-center">
+       
+            <h2 style="text-align: center;" > {{ firstname }} {{lastname}} </h2>  
+            <ion-img *ngIf="isVerified"  class="verified" src="https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_213062%2Fproject_335137%2Fimages%2FFigs%2FFaceVer.png"></ion-img>
+       </ion-text>
+        
+
+    <br>
+    <ion-card>
+        <ion-text class="ion-text-center" color="primary">
+            <h3> {{status}} </h3>
+        </ion-text>
+    </ion-card>
+   
+</ion-content>
+
+<ion-footer>
     <ion-button expand="block" (click)="onSendMessage()">
         <ion-icon slot="start" name="add"></ion-icon>
         Message Me!
     </ion-button>
-</ion-content>
+</ion-footer>

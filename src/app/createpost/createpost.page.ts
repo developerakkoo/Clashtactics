@@ -8,6 +8,10 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 
+
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+
+
 @Component({
   selector: 'app-createpost',
   templateUrl: './createpost.page.html',
@@ -21,7 +25,19 @@ export class CreatepostPage implements OnInit {
               private router: Router,
               private navCtrl: NavController,
               private dataS: DataService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              
+              private readonly afs: AngularFirestore) { 
+
+                this.itemsCollection = afs.collection<any>('Posts');
+                // .valueChanges() is simple. It just returns the 
+                // JSON data without metadata. If you need the 
+                // doc.id() in the value you must persist it your self
+                // or use .snapshotChanges() instead. See the addItem()
+                // method below for how to persist the id with
+                // valueChanges()
+                this.items = this.itemsCollection.valueChanges();
+              }
 
   user;
   title;
@@ -37,6 +53,11 @@ export class CreatepostPage implements OnInit {
 
   uploadPercent: Observable<number>;
   downloadURL: Observable<string>;
+
+
+  private itemsCollection: AngularFirestoreCollection<any>;
+  items: Observable<any[]>;
+
 
   ngOnInit() {
 
@@ -84,6 +105,17 @@ export class CreatepostPage implements OnInit {
 
   post() {
     const {title, imageUrl, user} = this;
+   /*  this.itemsCollection.add({
+      title: this.title,
+      imageUrl: this.imageUrl,
+      username: this.user.username,
+      userimg: this.user.imageUrl,
+      userkey: this.user.key,
+      userVerified: this.user.isVerified,
+      postkey: this.afs.createId(),
+      likes: 0,
+      likedBy: []
+    }) */
     this.dataS.addpost(this.title, this.imageUrl, this.user.username, this.user.imageUrl, this.user.key, this.user.isVerified);
     this.router.navigate(['/tabs/tab1', this.userId]);
 

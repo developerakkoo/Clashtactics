@@ -54,7 +54,7 @@ export class AuthPage implements OnInit {
     this.form = new FormGroup({
       email: new FormControl(null, {validators: [Validators.required]}),
       password: new FormControl(null, {validators: [Validators.required]}),
-      policy: new FormControl(null, {validators: [Validators.required]} )
+      
     });
   }
 

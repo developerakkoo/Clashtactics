@@ -16,6 +16,7 @@ export class DataService {
   itemsRef: AngularFireList<any>;
   items: Observable<any[]>;
   likedPosts: Observable<any[]>
+  visible;
 
 
   
@@ -52,6 +53,7 @@ constructor(private database: AngularFireDatabase,
         userVerified: userVerified,
         published_at: new Date().toISOString(),
         likes: 0,
+        likedBy: {}
       });
 
     }
@@ -62,16 +64,19 @@ constructor(private database: AngularFireDatabase,
 
     addLike(key:string, value: number){
       let like = value + 1;
+      this.visible = true;
       this.itemsRef.update(key,{
         likes: like
-      })
+      });
     }
 
     disLike(key: string, value: number){
       let like = value -1;
+      this.visible = true;
       this.itemsRef.update(key, {
         likes: like
       });
+      
     }
 
 

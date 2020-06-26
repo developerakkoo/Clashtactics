@@ -18,6 +18,7 @@ export class VisitUserProfilePage implements OnInit {
   username;
   isVerified;
   imageurl;
+  status;
   user: any[];
   loggedUserKey;
 
@@ -45,7 +46,8 @@ export class VisitUserProfilePage implements OnInit {
       this.lastname =  userdata[5];
       this.imageurl = userdata[1];
       this.username = userdata[7];
-      this.isVerified = userdata[4];
+      this.status = userdata[6];
+      this.isVerified = userdata[3];
     })
     
   }
@@ -61,7 +63,7 @@ export class VisitUserProfilePage implements OnInit {
      this.database.list(`privateUserChatList/${this.loggedUserKey}`).push({
       username: this.username,
       userimage: this.imageurl,
-      key: this.userkey
+      userkey: this.userkey
     });
     this.router.navigate(['/tabs/tab3',  this.loggedUserKey]); 
     

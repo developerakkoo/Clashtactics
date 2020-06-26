@@ -14,8 +14,9 @@ import { count, tap } from 'rxjs/operators';
 import { Observable, of } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { getLocaleDateFormat } from '@angular/common';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
-
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -25,6 +26,7 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   likeValue: number;
   visible: boolean;
+  isUserVerified;
 
 loadedposts: Observable<any[]>;
 likedPosts: any;
@@ -45,6 +47,15 @@ items;
 backButtonSubscribtion;
 
 block;
+
+private itemsCollection: AngularFirestoreCollection<any>;
+Postitems: Observable<any[]>;
+
+heartType;
+postID;
+isClicked;
+counter = 0;
+
   constructor(private postS: PostService,
               private storage: Storage,
               private database: AngularFireDatabase,
@@ -55,7 +66,10 @@ block;
               private auth: AuthserviceService,
               private platform: Platform,
               private actionSheetCtrl: ActionSheetController,
-              private fireDB: AngularFireDatabase) {
+              private fireDB: AngularFireDatabase,
+              private sqlite: SQLite,
+              
+              private readonly afs: AngularFirestore) {
 
       this.likeValue = 0;
       this.storage.get('userid').then(key => {
@@ -66,10 +80,25 @@ block;
         this.userkey = key;
       });
 
+      this.itemsCollection = afs.collection<any>('Posts');
+     
+      this.Postitems = this.itemsCollection.snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+    
+
+
 
   }
+
+
  ngOnInit() {
   this.loadedposts = this.dataS.getPosts();
+ console.log("Post Items", this.Postitems);
 
 
   }
@@ -123,7 +152,8 @@ block;
 
 
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
+
     this.backButtonSubscribtion.unsubscribe();
 
   }
@@ -136,8 +166,10 @@ block;
     this.items = this.itemsRef.valueChanges();
     this.items.subscribe(data =>{
       console.log("Blocked data ", data.isBlocked);
+      console.log("VErified data:-", data.isVerified);
+      this.isUserVerified = data.userVerified;
       
-      if(data.isBlocked === true){
+      if(data.isBlocked === "true"){
        this.router.navigate(['/blocked-user']);
       }
       
@@ -148,12 +180,11 @@ block;
   }
 
 
-
-
   checkForCurrentUserProfile(key){
     this.profileRef = this.database.list(`/Profiles/${key}`).valueChanges().subscribe(profile =>{
       if(profile.length > 0){
         console.log("Checking profile...",profile);
+        this.isUserVerified = profile[3];
       }else{
         this.router.navigate(['/profile',key]);
         
@@ -163,49 +194,60 @@ block;
     
   }
 
-
-
-
   reportPost(postid, post) {
     console.log(postid);
-    this.database.list(`reportedPosts/${postid}`).push(post);
+    this.database.list(`reportedPosts`).push(post);
 
   }
-
-
-
 
 openAllCommentsPage() {
   console.log('Open Comments Page');
 }
 
 
-
-
-addLike(post) {
-
-  console.log('value', post.likes);
-  console.log('key', post.key);
-  
-  console.log('like-->', this.userkey);
-  this.storage.set(post.postID,post.postId);
-  this.dataS.addLike(post.key, post.likes);
-
-  this.dbRef = this.fireDB.database.ref(`Posts/${post.key}/likedBy`);
-  this.dbRef.child(this.userkey).set(true);
-
+toogleLike(heartType){
+  heartType = heartType == "heart" ? "heart-outline": "heart";
 }
 
-addDisLike(post) {
-  console.log('key', post.key);
-  console.log('Post Id', post.postID);
-  console.log('value', post.likes);
-  console.log('Dislike-->', this.userkey);
+addLike(post, event) {
+  
+  let postid;
+  this.storage.get(post.key).then(postid =>{
+    postid = postid;
+    if(postid === post.key){
+      console.log("DISLIKE");
+      this.dataS.disLike(post.key, post.likes);
+      this.storage.remove(post.key);
+      
+    }else{
+      this.storage.set(post.key, post.key).then(s =>{
+        console.log("stored id like", s);
+        
+      }).catch(e =>{
+        console.log("error like", e);
+        
+      })
+      console.log('key', post.key);
+    
+      
+      console.log('like-->', this.userkey);
+     
+      this.dataS.addLike(post.key, post.likes);
+      this.counter = this.counter + 1;
+      this.visible = true;
+      console.log("Like Counter:- ", this.counter);
+    }
+    
+    
 
-  this.dataS.disLike(post.key, post.likes);
-
-  this.dbRef = this.fireDB.database.ref(`likedBy/${post.postID}`);
-  this.dbRef.child(this.userkey).remove();
+  })
+  console.log("POST ID STORAGE", postid);
+  console.log("Like Event:- ", postid === post.key);
+  
+ 
+  
+  
+  
 
 
 }
@@ -271,7 +313,12 @@ async presentActionSheet(item) {
       icon: 'warning-outline',
       handler: () => {
         console.log(item);
-        this.database.list(`reportedPosts/${item.key}`).push(item);
+        this.database.list(`reportedPosts`).push({
+          title: item.title,
+          postkey: item.key,
+          imageurl: item.imageUrl,
+          username: item.username
+        });
       }
     },  {
       text: 'Cancel',

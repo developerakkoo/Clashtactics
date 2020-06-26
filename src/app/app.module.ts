@@ -13,11 +13,13 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuthModule , AngularFireAuth} from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 import { environment } from '../environments/environment';
 
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,11 +27,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   imports: [BrowserModule,
     IonicModule.forRoot(), AppRoutingModule,
     IonicStorageModule.forRoot(),
-    
+  
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
+    AngularFirestoreModule
  ],
     
   providers: [
@@ -38,7 +41,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     AngularFireDatabase,
     AngularFireAuth,
     InAppBrowser,
-    
+    SQLite,
     
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

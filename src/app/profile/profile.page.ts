@@ -22,7 +22,7 @@ export class ProfilePage implements OnInit {
   lastname;
   imageUrl;
   isAdmin;
-  query;
+  status;
 
   userId;
 
@@ -102,8 +102,8 @@ export class ProfilePage implements OnInit {
             }).catch(error =>{
               this.presentLoading("You need to Login again To Perform this operation...");
               this.toastCtrl.create({
-                message: "Login Again To Deleted Account!",
-                duration: 3000
+                message: "Please Login Again To Delete Account!",
+                duration: 4000
               }).then(s =>{
                 s.present();
               })
@@ -174,8 +174,7 @@ export class ProfilePage implements OnInit {
     console.log("Save username and picture to database");
     const {username, firstname, lastname} = this;
 
-   /*  this.storageLocal.set('username', this.username);
-    this.storageLocal.set('userimage', this.imageUrl); */
+
     databaseRef.set({
       key: this.userId,
       username: this.username,
@@ -184,7 +183,7 @@ export class ProfilePage implements OnInit {
       isBlocked: false,
       isVerified: false,
       imageUrl: this.imageUrl,
-      query: this.username.charAt(0)
+      status: this.status
     });
 
     this.router.navigate(['/editprofile', this.userId]);

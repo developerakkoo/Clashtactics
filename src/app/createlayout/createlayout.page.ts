@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 })
 export class CreatelayoutPage implements OnInit {
   username;
+  userImage;
   title;
   description;
   imageUrl;
@@ -48,6 +49,7 @@ export class CreatelayoutPage implements OnInit {
       this.database.list(`Profiles/${val}`).valueChanges().subscribe(user =>{
         console.log("database data",user);
         this.username = user[7];
+        this.userImage = user[1];
         
       })
       });
@@ -92,6 +94,7 @@ export class CreatelayoutPage implements OnInit {
       imageUrl: imageUrl,
       username: username,
       published_date: new Date().toISOString(),
+      userImage: this.userImage,
       likes:0,
     });
   }

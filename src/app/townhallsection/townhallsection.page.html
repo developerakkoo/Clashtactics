@@ -21,30 +21,38 @@
             <ion-col size="12">
                 <ion-card  class="ion-no-padding" *ngFor="let item of (items |async)?.slice().reverse()">
                     <ion-card-header color="primary">
-
-                        <ion-label color="light" >{{item.title}}</ion-label>
-                        <p  style="color: azure;">Posted By: {{item?.username}}</p>
-
+                        <ion-col size="10" >
+                            <ion-item color="primary" lines="none">
+                                <ion-avatar>
+                                    <ion-img [src]="item.userImage"></ion-img>
+                                </ion-avatar>
+                            <ion-label color="light">
+                                <p  style="margin-left: 10px; font-weight: bold;" >{{item?.username}}</p>
+                            </ion-label>
+                            </ion-item>
+                            <ion-text class="ion-text-center" color="light">
+                                <h1> {{item?.title}} </h1>
+                            </ion-text>
+                        </ion-col>
 
                     </ion-card-header>
                     <ion-card-content class="ion-no-padding">
 
                         <ion-img style="width: auto; height: 250px;" [src]="item.imageUrl"></ion-img>
-
-                        <ion-button fill="clear" size="large" *ngIf="visible" (click)="addLike(item.key, item.likes)">
+                        <ion-button   fill="clear" size="large"(click)="addLike(item, item.likes)">
+                            LIKE  {{item?.likes}}
+                            <!-- <ion-icon slot="start"  *ngIf="visible"  name="heart-outline"></ion-icon> 
+                             <ion-icon slot="start" *ngIf="!visible" name="heart"></ion-icon>  -->
+                        </ion-button>    
+                      <!--   <ion-button fill="clear" size="large" *ngIf="visible" (click)="addLike(item.key, item.likes)">
                             <ion-icon slot="start" name="heart-outline"></ion-icon>
                         </ion-button>
                         <ion-button fill="clear" size="large" *ngIf="!visible" (click)="addDisLike(item.key, item.likes)">
                             <ion-icon slot="start" name="heart"></ion-icon>
-                        </ion-button>
+                        </ion-button> -->
                         <ion-button fill="clear" size="large" (click)="addcomment(item.id)">
                             <ion-icon slot="start" name="chatbox-outline"></ion-icon>
                         </ion-button>
-                        <ion-label style="padding: 10px; margin-left: 20px;">
-                            <h3> {{ item.likes }} Likes </h3>
-
-
-                        </ion-label>
                         <ion-text class="ion-align-items-end">
                             {{item.published_at | date}}
                         </ion-text>

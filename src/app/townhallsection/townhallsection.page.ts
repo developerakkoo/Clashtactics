@@ -64,7 +64,7 @@ export class TownhallsectionPage implements OnInit {
     this.router.navigate(['/createlayout', this.townHallId, this.userId]);
   }
 
-  addLike(key: string, value: number) {
+  /* addLike(key: string, value: number) {
     this.visible = false;
     const like = value + 1;
     console.log('key', key);
@@ -77,7 +77,57 @@ export class TownhallsectionPage implements OnInit {
 
     /* this.database.list(`Layouts/${this.townHallId}`).update(key,{
       likes: like
-    }) */
+    }) 
+  }
+ */
+  addLike(post, event) {
+  
+    let postid;
+    this.storageLocal.get(post.key).then(postid =>{
+      postid = postid;
+      if(postid === post.key){
+        console.log("DISLIKE");
+        let like = event -1;
+      this.visible = true;
+      this.itemsRef.update(post.key, {
+        likes: like
+      });
+      
+        this.storageLocal.remove(post.key);
+        
+      }else{
+        let like = event + 1;
+      this.visible = true;
+      this.itemsRef.update(post.key,{
+        likes: like
+      });
+        this.storageLocal.set(post.key, post.key).then(s =>{
+          console.log("stored id like", s);
+          
+        }).catch(e =>{
+          console.log("error like", e);
+          
+        })
+        console.log('key', post.key);
+      
+        
+        console.log('like-->', this.userId);
+       
+     
+      }
+      
+      
+  
+    })
+    console.log("POST ID STORAGE", postid);
+    console.log("Like Event:- ", postid === post.key);
+    
+   
+    
+    
+    
+  
+  
   }
 
   addDisLike(key: string, value: number) {

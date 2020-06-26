@@ -18,56 +18,7 @@
             <ion-col size="12">
 
 
-
-<!-- Cards -->
-   <!--  <ion-card no-padding padding-bottom no-margin class="card" *ngFor="let item of (loadedposts |async)?.slice().reverse()">
-
-      <ion-row>
-        <ion-col col-10>
-          <ion-item>
-            <ion-avatar>
-                <ion-img [src]="item.userimage"></ion-img>
-            </ion-avatar>
-        <h4 style="font-weight: bold;" color="dark">{{item?.username}}</h4>
-        <p> <ion-avatar>
-            <img style="height: 30px; width:30px; float:right;" src="https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_213062%2Fproject_335137%2Fimages%2FFigs%2FFaceVer.png" />
-        </ion-avatar></p>
-        
-      </ion-item>
-        </ion-col >
-        <ion-col col-2>
-          <ion-button (click)="onClick()">
-              <ion-icon slot="icon-only" name="add"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-      
-
-      <img src="http://ionicframework.com/dist/preview-app/www/assets/img/advance-card-bttf.png" (tap)="tapPhotoLike($event)">
-
-   <p no-margin no-padding>
-        <button clear ion-button icon-only (click)="" class="like-btn">
-          <ion-icon no-padding  class="icon-space"></ion-icon>
-        </button>
-       
-      </p> 
-      <hr>
-
-      <ion-card-content>
-  
-        <p><b>{{item?.username}}</b> {{ item?.title}} </p>
-       
-        
-      </ion-card-content>
-
-    </ion-card>
-
-
-
-
- -->
-
-<ion-card class="card" *ngFor="let item of (loadedposts |async)?.slice().reverse()" class="ion-no-margin" class="ion-no-padding">
+<ion-card class="card" *ngFor="let item of (loadedposts |async)?.slice().reverse() let i = index" class="ion-no-margin" class="ion-no-padding">
     <ion-row>
         <ion-col size="10">
             <ion-item (click)="visitUserProfile(item.userkey)">
@@ -75,7 +26,7 @@
                     <ion-img [src]="item.userimage"></ion-img>
                 </ion-avatar>
             <p (click)="visitUserProfile(item.userkey)"  style="margin-left: 10px; font-weight: bold;" color="dark">{{item?.username}}</p>
-            <p> <ion-avatar *ngIf="item.userVerified ==='true'" >
+            <p> <ion-avatar *ngIf="item.userVerified === true">
                 <img style="height: 20px; width:20px; margin-top: 23px; margin-left: 6px;" src="https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_213062%2Fproject_335137%2Fimages%2FFigs%2FFaceVer.png" />
             </ion-avatar></p>
             </ion-item>
@@ -99,98 +50,23 @@
 
     <ion-row>
         <ion-col size="12">
-            <p>Likes {{item?.likes}} </p>        
-            
-                <ion-button   fill="clear" size="large" *ngIf="visible" (click)="addDisLike(item)">
-                    <ion-icon slot="start" name="heart"></ion-icon>
+               
+            <br>
+         
+                    <ion-button   fill="clear" size="large"(click)="addLike(item, $event)">
+                        LIKE  {{item?.likes}}
+                
+                    </ion-button>        
+    
+                <ion-button fill="clear" size="large" (click)="addcomment(item.key)">
+                    <ion-icon style="float: right;" slot="start" name="chatbox-outline"></ion-icon>
                 </ion-button>
-
-                <ion-button   fill="clear" size="large" *ngIf="!visible" (click)="addLike(item)">
-                    <ion-icon slot="start" name="heart-outline"></ion-icon>
-                </ion-button>           
-
-            <ion-button fill="clear" size="large" (click)="addcomment(item.key)">
-                <ion-icon style="float: right;" slot="start" name="chatbox-outline"></ion-icon>
-            </ion-button>
-
+    
             <p> {{item?.published_at |date}} </p>
         </ion-col>
     </ion-row>
 </ion-card>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <!-- <ion-card color="light" class="ion-no-padding" *ngFor="let item of (loadedposts |async)?.slice().reverse()">
-
-                    <ion-card-header color="light">
-                        <div (click)="visitUserProfile(item.userkey)">
-                            <ion-avatar>
-                                <ion-img [src]="item.userimage"></ion-img>
-                            </ion-avatar>
-                            <span></span>
-
-                            <p> {{item?.username}}</p>
-                            <ion-avatar>
-                                <img style="height: 30px; width:30px; float:right;" src="https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_213062%2Fproject_335137%2Fimages%2FFigs%2FFaceVer.png" />
-                            </ion-avatar>
-                        </div>
-
-
-
-
-
-                    </ion-card-header>
-                    <ion-card-content class="ion-no-padding">
-
-                        <ion-img style="width: auto; height: 250px;" [src]="item.imageUrl"></ion-img>
-                        <ion-label>{{item.title}}</ion-label>
-
-                        <ion-button fill="clear" size="large" *ngIf="visible" (click)="addLike(item)">
-                            <ion-icon slot="start" name="heart"></ion-icon>
-                        </ion-button>
-
-                        <ion-button fill="clear" size="large" *ngIf="!visible" (click)="addDisLike(item)">
-                            <ion-icon slot="start" name="heart-outline"></ion-icon>
-                        </ion-button>
-
-                        <ion-button fill="clear" size="large" (click)="addcomment(item.key)">
-                            <ion-icon style="float: right;" slot="start" name="chatbox-outline"></ion-icon>
-                        </ion-button>
-
-                        <ion-button fill="clear" size="large" (click)="reportPost(item.key, item)">
-                            <ion-icon slot="start" name="eye-off-outline"></ion-icon>
-                        </ion-button>
-
-                        <ion-label style="padding: 10px; margin-left: 20px;">
-                            <h3> {{ item.likes }} Likes </h3>
-
-
-                        </ion-label>
-                        <ion-text class="ion-align-items-end">
-                            {{item.published_at | date}}
-                        </ion-text>
-                    </ion-card-content>
-
-
-                </ion-card> -->
             </ion-col>
 
         </ion-row>

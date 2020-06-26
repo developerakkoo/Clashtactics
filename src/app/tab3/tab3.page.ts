@@ -1,3 +1,4 @@
+import { Key } from 'protractor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
@@ -35,8 +36,13 @@ export class Tab3Page implements OnInit {
                 this.storageLocal.get('userid').then(val => {
                   console.log('Got into log', val);
                   this.loggedUserKey = val;
-                  this.itemsRef = this.database.list(`privateUserChatList/${val}`);
-                  this.items = this.itemsRef.valueChanges();
+                  this.itemsRef = database.list(`/privateUserChatList/${val}`);
+                  // Use snapshotChanges().map() to store the key
+                  this.items = this.itemsRef.snapshotChanges().pipe(
+                    map(changes => 
+                      changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+                    )
+                  );
                   });
             
   }
@@ -50,12 +56,12 @@ export class Tab3Page implements OnInit {
 
   }
 
-  deleteUser(userkey){
-    console.log("deleteuser ",userkey);
-    this.storageLocal.get('userid').then(val => {
-      this.itemsRef.remove(userkey);
-      console.log('delete key', val);
-    });
+  deleteUser(key, slidebtn){
+    console.log("deleteuser ",key);
+    this.itemsRef.remove(key);
+    slidebtn.close();
+    this.router.navigate(['/tabs/tab3', this.loggedUserKey])
+  
       }
 
 
